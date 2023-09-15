@@ -1,9 +1,11 @@
 <script>
+  import { SliceZone } from '@prismicio/svelte';
+  import {components} from '$lib/slices'
+
   export let data
 
-  const { page } = data
+
 </script>
 
-<h1>{ page.title }</h1>
 
-<h1>{ page.about }</h1>
+<SliceZone slices={data.slices} {components} />

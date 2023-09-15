@@ -12,26 +12,15 @@
 				},
 				"type": "UID"
 			},
-			"title": {
-				"type": "Text",
-				"config": {
-					"label": "Title",
-					"placeholder": ""
-				}
-			},
-			"image": {
-				"type": "Image",
-				"config": {
-					"label": "Image",
-					"constraint": {},
-					"thumbnails": []
-				}
-			},
 			"slices": {
 				"type": "Slices",
 				"fieldset": "Slice Zone",
 				"config": {
-					"choices": {}
+					"choices": {
+						"image": {
+							"type": "SharedSlice"
+						}
+					}
 				}
 			}
 		},
