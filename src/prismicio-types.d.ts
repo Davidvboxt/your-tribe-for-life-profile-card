@@ -4,6 +4,71 @@ import type * as prismic from '@prismicio/client';
 
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
+type MembersDocumentDataSlicesSlice = never;
+
+/**
+ * Content for members documents
+ */
+interface MembersDocumentData {
+	/**
+	 * Slice Zone field in *members*
+	 *
+	 * - **Field Type**: Slice Zone
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: members.slices[]
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#slices
+	 */
+	slices: prismic.SliceZone<MembersDocumentDataSlicesSlice>
+	/**
+	 * Meta Description field in *members*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A brief summary of the page
+	 * - **API ID Path**: members.meta_description
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */;
+	meta_description: prismic.KeyTextField;
+
+	/**
+	 * Meta Image field in *members*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: members.meta_image
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/field#image
+	 */
+	meta_image: prismic.ImageField<never>;
+
+	/**
+	 * Meta Title field in *members*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A title of the page used for social media and search engines
+	 * - **API ID Path**: members.meta_title
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	meta_title: prismic.KeyTextField;
+}
+
+/**
+ * members document from Prismic
+ *
+ * - **API ID**: `members`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type MembersDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<
+	Simplify<MembersDocumentData>,
+	'members',
+	Lang
+>;
+
 type PageDocumentDataSlicesSlice = ImageSlice;
 
 /**
@@ -69,7 +134,7 @@ export type PageDocument<Lang extends string = string> = prismic.PrismicDocument
 	Lang
 >;
 
-export type AllDocumentTypes = PageDocument;
+export type AllDocumentTypes = MembersDocument | PageDocument;
 
 /**
  * Primary content in *Main → Primary*
@@ -107,6 +172,41 @@ export interface ImageSliceDefaultPrimary {
 }
 
 /**
+ * Primary content in *Main → Items*
+ */
+export interface ImageSliceDefaultItem {
+	/**
+	 * hoi field in *Main → Items*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: image.items[].hoi
+	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+	 */
+	hoi: prismic.RichTextField;
+
+	/**
+	 * Image field in *Main → Items*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: image.items[].image
+	 * - **Documentation**: https://prismic.io/docs/field#image
+	 */
+	image: prismic.ImageField<never>;
+
+	/**
+	 * Link field in *Main → Items*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: image.items[].link
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	link: prismic.LinkField;
+}
+
+/**
  * Default variation for Main Slice
  *
  * - **API ID**: `default`
@@ -116,7 +216,7 @@ export interface ImageSliceDefaultPrimary {
 export type ImageSliceDefault = prismic.SharedSliceVariation<
 	'default',
 	Simplify<ImageSliceDefaultPrimary>,
-	never
+	Simplify<ImageSliceDefaultItem>
 >;
 
 /**
@@ -143,12 +243,16 @@ declare module '@prismicio/client' {
 
 	namespace Content {
 		export type {
+			MembersDocument,
+			MembersDocumentData,
+			MembersDocumentDataSlicesSlice,
 			PageDocument,
 			PageDocumentData,
 			PageDocumentDataSlicesSlice,
 			AllDocumentTypes,
 			ImageSlice,
 			ImageSliceDefaultPrimary,
+			ImageSliceDefaultItem,
 			ImageSliceVariation,
 			ImageSliceDefault
 		};

@@ -17,7 +17,11 @@ export const repositoryName = config.repositoryName;
 const routes = [
 	{
 		type: 'page',
-		path: '/:uid'
+		path: '/home'
+	},
+	{
+		type: 'members',
+		path: '/members'
 	}
 ];
 
