@@ -1,1 +1,6 @@
-// place files you want to import through the `$lib` alias in this folder.
+
+import Main from './main/index.svelte';
+
+export const components = {
+	main: Main,
+};
